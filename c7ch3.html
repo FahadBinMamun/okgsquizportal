@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সপ্তম শ্রেণি: আইসিটি ক্লাস টেস্ট</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        @keyframes background-pan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: linear-gradient(120deg, #0a0f1e, #101935, #0a0f1e);
+            background-size: 200% 200%;
+            color: #e0e7ff;
+            line-height: 1.8;
+            animation: background-pan 15s ease infinite;
+        }
+
+        ::selection {
+            background-color: #00d2ff;
+            color: #0c1427;
+        }
+
+        h1, h2, h3, p, button, input, span {
+             line-height: 1.7;
+        }
+        
+        .main-logo {
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
+        }
+        .main-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 25px rgba(0, 210, 255, 0.7));
+        }
+
+        .card {
+            background: rgba(12, 20, 39, 0.6);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00d2ff;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: #00d2ff;
+            color: #0a0f1e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .option-button {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e7ff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        .option-button:hover:not(.selected):not(.disabled) {
+            background-color: rgba(0, 255, 255, 0.15);
+            border-color: rgba(0, 255, 255, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        .option-button.correct {
+            background-color: #10B981 !important;
+            color: white !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+        .option-button.incorrect {
+            background-color: #EF4444 !important;
+            color: white !important;
+            border-color: #EF4444 !important;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+        .option-button.disabled { cursor: not-allowed; opacity: 0.7; }
+
+        .action-button {
+            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+        }
+        .action-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
+        }
+        .action-button:disabled { background: #555; cursor: not-allowed; box-shadow: none; }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px #ffd200, 0 0 45px #f7971e; }
+            100% { transform: scale(1); }
+        }
+        
+        .review-button-special {
+            background: linear-gradient(45deg, #f7971e, #ffd200);
+            color: #2c2c2c;
+            animation: pulse-animation 2s infinite;
+            border: none;
+            box-shadow: 0 0 15px #ffd200, 0 0 25px #f7971e;
+        }
+        .review-button-special:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 0 20px #ffd200, 0 0 35px #f7971e;
+        }
+
+        .hidden { display: none; }
+        
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex; justify-content: center; align-items: center; z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: rgba(12, 20, 39, 0.9);
+            padding: 2rem; border-radius: 1rem; text-align: center;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+            max-width: 400px; width: 90%; color: #e0e7ff;
+        }
+        .modal-content h3 { font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem; color: #EF4444; }
+        
+        #progress-container { width: 100%; background-color: rgba(255, 255, 255, 0.1); border-radius: 9999px; overflow: hidden; }
+        #progress-bar {
+            height: 12px; background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+            border-radius: 9999px; transition: width 0.1s linear, background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container max-w-4xl mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <img src="https://i.postimg.cc/J4SJrFNp/school-logo-1.png" alt="স্কুলের লোগো" class="mx-auto mb-6 w-32 h-32 md:w-40 md:h-40 main-logo">
+            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400 py-2">আইসিটি ক্লাস টেস্ট</h1>
+            <p class="text-2xl mt-2 text-cyan-300">সপ্তম শ্রেণি</p>
+            <p class="text-xl mt-1 text-blue-300">অধ্যায় ৩: নিরাপদ ও নৈতিক ব্যবহার</p>
+        </header>
+
+        <div id="login-container" class="max-w-xl mx-auto space-y-8">
+            <div class="card">
+                <h2 class="step-title"><span class="step-number">১</span>নির্দেশনাগুলো পড়ো</h2>
+                <ul class="list-disc list-inside space-y-2 text-blue-200 pl-12">
+                    <li>একজন শিক্ষার্থী শুধুমাত্র **একবারই** এই পরীক্ষায় অংশ নিতে পারবে।</li>
+                    <li>পরীক্ষা চলাকালীন অন্য ট্যাব খুললে পরীক্ষাটি **বাতিল হয়ে যাবে** এবং পুনরায় অংশ নেওয়া যাবে না।</li>
+                    <li>প্রতিটি প্রশ্নের জন্য তুমি ৩৫ সেকেন্ড সময় পাবে।</li>
+                    <li>কমপক্ষে ৮০% নম্বর পাওয়ার চেষ্টা করো, শুভকামনা!</li>
+                    <li>গুরুত্বসহকারে প্রতিটি ভুল উত্তরের সঠিক ব্যাখ্যা দেখে নাও, কারণ পরীক্ষায় ভুল করা প্রশ্নগুলো থেকে পরবর্তীতে আবারও প্রশ্ন করা হতে পারে।</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2 class="step-title"><span class="step-number">২</span>লগইন করে শুরু করো</h2>
+                <div class="pl-12">
+                    <input type="text" id="student-roll" class="w-full text-center p-3 border border-cyan-400/30 bg-white/5 rounded-lg mb-4 focus:ring-2 focus:ring-cyan-400 focus:outline-none" placeholder="তোমার রোল নম্বর লেখো" required>
+                    <input type="password" id="pin-input" class="w-full text-center p-3 border border-cyan-400/30 bg-white/5 rounded-lg mb-4 focus:ring-2 focus:ring-cyan-400 focus:outline-none" placeholder="তোমার গোপন পিন লেখো" required>
+                    <button id="login-button" class="action-button">প্রবেশ করো</button>
+                    <p id="error-message" class="text-red-400 mt-4 hidden text-center"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-section" class="card hidden">
+            <div class="flex justify-between items-center mb-2 flex-wrap">
+                <p class="text-lg font-semibold">স্কোর: <span id="current-score">0</span></p>
+                <p class="text-lg font-semibold text-cyan-400">প্রশ্ন <span id="question-number">1</span> / <span id="total-questions">0</span></p>
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <div id="progress-container" class="w-full">
+                    <div id="progress-bar" style="width: 100%;"></div>
+                </div>
+                <span id="timer" class="font-bold text-lg ml-4 text-red-400"></span>
+            </div>
+            <h2 id="question-text" class="text-2xl font-bold mb-6 text-blue-300">প্রশ্ন এখানে থাকবে?</h2>
+            <div id="options-container" class="grid grid-cols-1 gap-3"></div>
+            <p id="feedback" class="text-center font-bold mt-4 hidden"></p>
+        </div>
+
+        <div id="result-section" class="card hidden text-center">
+            <h2 class="text-3xl font-bold mb-6 text-cyan-400">ক্লাস টেস্ট শেষ!</h2>
+            <div class="bg-white/5 p-4 rounded-lg mb-6 text-left border border-cyan-400/20">
+                <h3 class="font-bold text-lg mb-2 text-cyan-400">তোমার তথ্য:</h3>
+                <p><strong>নাম:</strong> <span id="participant-name"></span></p>
+                <p><strong>রোল:</strong> <span id="participant-roll"></span></p>
+            </div>
+            <p class="text-2xl font-bold mb-4 text-blue-300">তোমার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+            <p id="result-message" class="text-lg mb-8"></p>
+            <p id="submission-status" class="font-bold"></p>
+            <button id="toggle-review-button" class="action-button review-button-special mt-4">উত্তরগুলো দেখো</button>
+        </div>
+
+        <div id="answer-review-section" class="hidden mt-8 text-left">
+            <h3 class="text-2xl font-bold text-center mb-4 text-cyan-400">প্রশ্নগুলোর বিস্তারিত ব্যাখ্যা</h3>
+            <div id="review-container"></div>
+        </div>
+    </div>
+    
+    <div id="tab-switch-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>সতর্কতা!</h3>
+            <p>তুমি ক্লাস টেস্ট চলাকালীন অন্য ট্যাবে চলে গিয়েছিলে। তোমার পরীক্ষাটি বাতিল করা হয়েছে।</p>
+            <button onclick="window.location.reload()">পেজটি রিলোড করো</button>
+        </div>
+    </div>
+
+    <footer class="text-center mt-16 pt-8 border-t border-cyan-400/10">
+        <nav class="mb-4">
+            <ul class="flex flex-wrap justify-center gap-4 text-lg">
+                <li><a href="#" class="text-blue-300 hover:text-cyan-400 transition-colors duration-200">হোম</a></li>
+                <li><a href="#" class="text-blue-300 hover:text-cyan-400 transition-colors duration-200">ফলাফল</a></li>
+                <li><a href="#" class="text-blue-300 hover:text-cyan-400 transition-colors duration-200">নোটিশ বোর্ড</a></li>
+            </ul>
+        </nav>
+        <p class="text-blue-200">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+        <p class="text-sm text-blue-400 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // ======================= আপনার পরিবর্তনের জায়গা ==========================
+        // =========================================================================
+
+        // ১. আপনার নতুন DEPLOY করা Apps Script URL টি এখানে পেস্ট করুন
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxACxhm9N_5xYZubJDZoyYx7-MfWSnzIcSxVIv3VfudJ6iSDP1tM4YqU9HqsOlFXPKI3Q/exec';
+
+        // ২. আপনার নতুন প্রশ্নগুলো এখানে যোগ করুন
+        const allQuestions = [
+    {
+        question: "কোনটির ভুল ব্যবহারের জন্য বড় বিপদ হতে পারে?",
+        options: ["মাউস", "তথ্য প্রযুক্তি", "ক্যালকুলেটর", "পাসওয়ার্ড"],
+        answer: "তথ্য প্রযুক্তি",
+        explanation: "তথ্য প্রযুক্তির ভুল ব্যবহার, যেমন সাইবার ক্রাইম, গুজব ছড়ানো বা ব্যক্তিগত তথ্য ফাঁস, সামাজিক এবং রাষ্ট্রীয় পর্যায়ে বড় ধরনের বিপদ সৃষ্টি করতে পারে।"
+    },
+    {
+        question: "ইন্টারনেট ব্যবহারের সময় কতটি নিয়ম মেনে চলা উচিত?",
+        options: ["৩টি", "৪টি", "৫টি", "৬টি"],
+        answer: "৩টি",
+        explanation: "ইন্টারনেট ব্যবহারের সাধারণ নিয়মগুলোর মধ্যে প্রধান তিনটি হলো: অপরিচিত কাউকে ব্যক্তিগত তথ্য (নাম, ঠিকানা, পাসওয়ার্ড) না দেওয়া, ক্ষতিকর বা অশালীন ওয়েবসাইটে প্রবেশ না করা এবং সর্বদা সৌজন্য বজায় রাখা।"
+    },
+    {
+        question: "তথ্য প্রযুক্তির ব্যবহারে আমাদের কী করতে হবে?",
+        options: ["সচেতন হতে হবে", "দূরে থাকতে হবে", "চোখের আড়াল করতে হবে", "বাধা দিতে হবে"],
+        answer: "সচেতন হতে হবে",
+        explanation: "তথ্য প্রযুক্তির সঠিক ও নিরাপদ ব্যবহার নিশ্চিত করার জন্য এর সুবিধা এবং ঝুঁকিগুলো সম্পর্কে সচেতন থাকা প্রয়োজন। একে এড়িয়ে চলা বা বাধা দেওয়া সম্ভব নয়।"
+    },
+    {
+        question: "কম্পিউটারে ইন্টারনেট ব্যবহারের সময় অপরিচিত কাউকে দেবে না - \ni. নাম ঠিকানা \nii. ছবি \niii. পাসওয়ার্ড",
+        options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"],
+        answer: "i, ii ও iii",
+        explanation: "ইন্টারনেটে নিরাপদ থাকার জন্য নিজের ব্যক্তিগত ও সংবেদনশীল তথ্য, যেমন—নাম, ঠিকানা, ছবি এবং বিশেষ করে পাসওয়ার্ড, কখনোই কোনো অপরিচিত ব্যক্তির সাথে শেয়ার করা উচিত নয়।"
+    },
+    {
+        question: "নিচের অনুচ্ছেদটি পড়ো এবং নিচের প্রশ্নটির উত্তর দাও:\nসপ্তম শ্রেণির ছাত্র সাদিয়া নিয়মিত কম্পিউটারে ইন্টারনেট ব্যবহার করে। ইদানিং কিছু ওয়েবসাইট দেখার কারণে তার ব্যবহার অশালীন হয়ে যাচ্ছে।\nসাদিয়ার ব্যবহৃত ওয়েবসাইটটি কোন ধরনের?",
+        options: ["জ্ঞানমূলক", "শিক্ষামূলক", "বিপজ্জনক", "বিনোদনমূলক"],
+        answer: "বিপজ্জনক",
+        explanation: "যেসব ওয়েবসাইট ব্যবহারের ফলে ব্যবহারকারীর আচরণে নেতিবাচক বা অশালীন পরিবর্তন আসে, সেগুলো শিশু-কিশোরদের জন্য বিপজ্জনক। উদ্দীপকে সাদিয়ার ক্ষেত্রে ঠিক তাই ঘটেছে।"
+    },
+    {
+        question: "মানুষের কোনো একটি কাজের মাত্রা ছাড়িয়ে যাওয়াকে কী বলে?",
+        options: ["জ্ঞানী", "বিনোদন", "আসক্তি", "সমাজসেবা"],
+        answer: "আসক্তি",
+        explanation: "যখন কোনো কাজের প্রতি আকর্ষণ এতটাই বেড়ে যায় যে তা ব্যক্তির স্বাভাবিক জীবনযাত্রাকে ব্যাহত করে, তখন সেই অবস্থাকে আসক্তি (Addiction) বলা হয়।"
+    },
+    {
+        question: "MMO-এর পূর্ণরূপ কী?",
+        options: ["Massively Multimedia online game", "Massively Multiplayer online game", "Many Many online game", "Massively Multiplayer game"],
+        answer: "Massively Multiplayer online game",
+        explanation: "MMO বা Massively Multiplayer Online Game হলো এমন ধরনের অনলাইন ভিডিও গেম যেখানে একই সময়ে বিশ্বের বিভিন্ন প্রান্ত থেকে বিপুল সংখ্যক খেলোয়াড় একসাথে অংশ নিতে পারে।"
+    },
+    {
+        question: "যারা খুব বেশি ইন্টারনেট ব্যবহার করে তাদেরকে কী বলে?",
+        options: ["DIA", "IDA", "IAD", "DAI"],
+        answer: "IAD",
+        explanation: "IAD-এর পূর্ণরূপ হলো Internet Addiction Disorder। যারা প্রয়োজনের অতিরিক্ত এবং ক্ষতিকর পর্যায়ে ইন্টারনেট ব্যবহার করে, তাদের এই মানসিক সমস্যাকে IAD বলা হয়।"
+    },
+    {
+        question: "কম্পিউটারে আসক্ত হলে ক্ষতি হয় - \ni. কাজকর্মে \nii. লেখাপড়ায় \niii. স্বাস্থ্যের",
+        options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"],
+        answer: "i, ii ও iii",
+        explanation: "কম্পিউটারে অতিরিক্ত আসক্তি দৈনন্দিন স্বাভাবিক কাজকর্ম, মনোযোগ দিয়ে লেখাপড়া করা এবং শারীরিক ও মানসিক স্বাস্থ্য—এই তিনটি ক্ষেত্রেই মারাত্মক নেতিবাচক প্রভাব ফেলে।"
+    },
+    {
+        question: "নিচের অনুচ্ছেদটি পড়ো এবং নিচের প্রশ্নটির উত্তর দাও:\nমৌরিনের বয়স ৭ বছর। সে কার্টুন দেখতে খুব পছন্দ করে। মৌরিনের মা তাকে সারাদিন টেলিভিশনের সামনে বসিয়ে রাখেন। আর মৌরিনও কাউকে কার্টুন ছাড়া অন্য চ্যানেল দেখতে দেয় না।\nমৌরিনের কী ধরনের সমস্যা হতে পারে?",
+        options: ["প্রচণ্ড জ্বর", "মানসিক বিকাশে সমস্যা", "দ্রুত মানসিক বৃদ্ধি", "দ্রুত শারীরিক বৃদ্ধি"],
+        answer: "মানসিক বিকাশে সমস্যা",
+        explanation: "অতিরিক্ত টেলিভিশন বা স্ক্রিনে আসক্তি শিশুদের সামাজিক যোগাযোগ, খেলাধুলা ও সৃজনশীলতা থেকে দূরে রাখে, যা তাদের স্বাভাবিক মানসিক বিকাশে বাধা সৃষ্টি করে।"
+    },
+    {
+        question: "সৃজনশীল সৃষ্টিকর্মের কপি বা পুনরুৎপাদনের অধিকার সংরক্ষণ নিয়ে তৈরি আইনকে কী বলে?",
+        options: ["সামাজিক আইন", "কপিরাইট আইন", "কপিলেফট আইন", "ফেয়ার আইন"],
+        answer: "কপিরাইট আইন",
+        explanation: "কপিরাইট আইন হলো একটি আইনি অধিকার যা কোনো সৃজনশীল কাজের (যেমন: বই, গান, সফটওয়্যার) মূল স্রষ্টাকে তাঁর কর্মের পুনরুৎপাদন, বিতরণ ও ব্যবহারের একচ্ছত্র ক্ষমতা প্রদান করে।"
+    },
+    {
+        question: "বাংলাদেশে কপিরাইট আইন চালু হয় কত সালে?",
+        options: ["১৯৯৯", "২০০০", "২০০১", "২০০২"],
+        answer: "২০০০",
+        explanation: "বাংলাদেশে 'কপিরাইট আইন, ২০০০' প্রণয়ন করা হয়, যা ২০০৫ সালে সংশোধন করা হয়। এই আইন দেশের সৃজনশীল কর্মীদের মেধা সম্পদের সুরক্ষা দেয়।"
+    },
+    {
+        question: "কপিরাইটের একেবারে উল্টোটি কী?",
+        options: ["পাইরেটেড কপি", "কপিলেফট", "ফেয়ার ইউজ", "ওপেন সোর্স ফিলসফি"],
+        answer: "কপিলেফট",
+        explanation: "কপিলেফট হলো এমন একটি ব্যবস্থা যেখানে স্রষ্টা তার কাজকে অবাধে ব্যবহার, পরিবর্তন ও বিতরণের অনুমতি দেন, এই শর্তে যে, পরিবর্তিত কাজটিও একইরকম স্বাধীনতা প্রদান করবে। এটি কপিরাইটের কঠোর নিয়ন্ত্রণের বিপরীত ধারণা।"
+    },
+    {
+        question: "কপিরাইট আইন - \ni. লেখকের রয়্যালটি অধিকার সংরক্ষিত করে \nii. যে কোন সৃজনশীল কর্মের উপর প্রযোজ্য \niii. স্রষ্টার মৃত্যুর পরও বলবৎ থাকে",
+        options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"],
+        answer: "i, ii ও iii",
+        explanation: "কপিরাইট আইন লেখকের আর্থিক অধিকার বা রয়্যালটি নিশ্চিত করে, এটি সকল প্রকার মৌলিক সৃজনশীল কর্মের জন্য প্রযোজ্য এবং বাংলাদেশে স্রষ্টার মৃত্যুর পর আরও ৬০ বছর পর্যন্ত এই আইন কার্যকর থাকে।"
+    },
+    {
+        question: "নিচের অনুচ্ছেদটি পড়ো এবং নিচের প্রশ্নটির উত্তর দাও:\nজিনাত মাসুদ একজন নামকরা লেখক। তিনি যে উপন্যাসটি লেখেন তা একজন প্রকাশক প্রকাশ করেন। প্রকাশক বইটি ছাপিয়ে বাঁধাই করে, বিভিন্ন বিক্রেতার মাধ্যমে আমাদের কাছে পৌছান। এর মধ্যে লেখকও একটি অংশ পান।\nজিনাত মাসুদ বইয়ের বিক্রয়মূল্যের যে অংশটি পান তাকে কী বলে?",
+        options: ["রিয়েলিটি", "রয়্যালটি", "প্রোপার্টি", "কমিশন"],
+        answer: "রয়্যালটি",
+        explanation: "কোনো সৃজনশীল কর্মের (যেমন বই বা গান) বিক্রির লভ্যাংশ থেকে এর মূল স্রষ্টা বা স্বত্বাধিকারী যে নির্দিষ্ট অংশ পেয়ে থাকেন, তাকে রয়্যালটি বলা হয়।"
+    },
+    {
+        question: "যে হ্যাকার ওয়েবসাইটের ক্ষতি করে তাকে কী বলে?",
+        options: ["Black hat hacker", "White hat hacker", "Blue hat hacker", "Green hat hacker"],
+        answer: "Black hat hacker",
+        explanation: "ব্ল্যাক হ্যাট হ্যাকাররা অসৎ উদ্দেশ্যে এবং অনুমতি ছাড়া কোনো কম্পিউটার সিস্টেম বা ওয়েবসাইটে প্রবেশ করে এবং তথ্যের ক্ষতি, পরিবর্তন বা চুরি করে থাকে।"
+    },
+    {
+        question: "অন্যের লেখা চুরি করে নিজের নামে চালিয়ে দেওয়া বা প্রকাশ করাকে কী বলে?",
+        options: ["সোস্যালিজম", "প্লেজারিজম", "কপিরাইট", "কপিলেফট"],
+        answer: "প্লেজারিজম",
+        explanation: "প্লেজারিজম (Plagiarism) বা কুম্ভীলকবৃত্তি হলো অন্যের লেখা, ধারণা বা সৃষ্টিকর্মকে নকল করে নিজের নামে প্রকাশ করা। এটি একটি গুরুতর নৈতিক অপরাধ।"
+    },
+    {
+        question: "Mydoom Worm কী?",
+        options: ["ওয়েবসাইট", "ইন্টারনেট", "কম্পিউটার ভাইরাস", "ই-মেইল"],
+        answer: "কম্পিউটার ভাইরাস",
+        explanation: "Mydoom একটি কম্পিউটার ওয়ার্ম (যা এক ধরনের ভাইরাস বা ম্যালওয়্যার), যা ই-মেইলের মাধ্যমে খুব দ্রুত ছড়িয়ে পড়ে এবং কম্পিউটার সিস্টেমের নিরাপত্তা নষ্ট করে।"
+    },
+    {
+        question: "প্লেজারিজম এক ধরনের - \ni. অনৈতিক কাজ \nii. চুরি \niii. মহৎ কাজ",
+        options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"],
+        answer: "i ও ii",
+        explanation: "প্লেজারিজম বা অন্যের মেধা ও শ্রমলব্ধ কাজ নকল করা একটি অনৈতিক কাজ, কারণ এটি বুদ্ধিবৃত্তিক সম্পদের চুরির সমতুল্য। তাই এটি কোনোভাবেই মহৎ কাজ হতে পারে না।"
+    },
+    {
+        question: "নিচের অনুচ্ছেদটি পড়ো এবং নিচের প্রশ্নটির উত্তর দাও:\n'ক' কোম্পানির ওয়েবসাইটটি হ্যাক হয়েছে। তবে হ্যাকার ওয়েবসাইটির কোনো ক্ষতি করেনি। হ্যাকারকে পুলিশ ধরলে সে জানায় যে, সে কৌতূহলে ওয়েব সাইটে ঢুকেছিল।\n'ক' কোম্পানির ওয়েবসাইটটির হ্যাকার কোন ধরনের হ্যাকার?",
+        options: ["White hat hacker", "Black hat hacker", "Red hat hacker", "Blue hat hacker"],
+        answer: "White hat hacker",
+        explanation: "হোয়াইট হ্যাট হ্যাকাররা কোনো সিস্টেমের নিরাপত্তা ত্রুটি খুঁজে বের করে এবং কর্তৃপক্ষকে জানায়, কিন্তু কোনো ক্ষতি করে না। উদ্দীপকের হ্যাকার কোনো ক্ষতি না করায় তাকে এই শ্রেণির অন্তর্ভুক্ত করা যায়। তবে অনুমতি ছাড়া প্রবেশ করায় একে 'গ্রে হ্যাট' হ্যাকারও বলা হয়, যা প্রদত্ত অপশনে নেই।"
+    }
+];
+
+        // --- ক্লাস টেস্টের অন্যান্য সেটিংস ---
+        const QUESTIONS_PER_QUIZ = 20;
+        const TIME_PER_QUESTION = 35; // সেকেন্ড
+        const FEEDBACK_DELAY_MS = 1500;
+
+        // =========================================================================
+        // ================== নিচের কোডে পরিবর্তনের প্রয়োজন নেই =====================
+        // =========================================================================
+
+        // --- DOM ELEMENTS ---
+        const loginContainer = document.getElementById('login-container');
+        const studentRollInput = document.getElementById('student-roll');
+        const pinInput = document.getElementById('pin-input');
+        const loginButton = document.getElementById('login-button');
+        const errorMessage = document.getElementById('error-message');
+        const quizSection = document.getElementById('quiz-section');
+        const questionNumberSpan = document.getElementById('question-number');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentScoreSpan = document.getElementById('current-score');
+        const feedbackElement = document.getElementById('feedback');
+        const resultSection = document.getElementById('result-section');
+        const participantNameSpan = document.getElementById('participant-name');
+        const participantRollSpan = document.getElementById('participant-roll');
+        const finalScoreSpan = document.getElementById('final-score');
+        const finalTotalSpan = document.getElementById('final-total');
+        const resultMessageElement = document.getElementById('result-message');
+        const submissionStatus = document.getElementById('submission-status');
+        const toggleReviewButton = document.getElementById('toggle-review-button');
+        const answerReviewSection = document.getElementById('answer-review-section');
+        const tabSwitchModal = document.getElementById('tab-switch-modal');
+        const timerSpan = document.getElementById('timer');
+        const progressBar = document.getElementById('progress-bar');
+
+        // --- STATE VARIABLES ---
+        let studentInfo = {};
+        let quizStarted = false;
+        let timerInterval;
+        let submittedAnswers = [];
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let isSubmitting = false; 
+        let answerLocked = false; // উত্তর লক করার জন্য ফ্ল্যাগ
+
+        // --- FUNCTIONS ---
+        function handleLogin() {
+            const roll = studentRollInput.value.trim();
+            const pin = pinInput.value.trim();
+
+            if (!roll || !pin) {
+                showError("রোল এবং পিন নম্বর দিন।");
+                return;
+            }
+            
+            loginButton.disabled = true;
+            loginButton.textContent = "যাচাই করা হচ্ছে...";
+            errorMessage.classList.add('hidden');
+            
+            const formData = new FormData();
+            formData.append('action', 'verifyLogin');
+            formData.append('roll', roll);
+            formData.append('pin', pin);
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        studentInfo = { name: data.name, roll: roll };
+                        startQuiz();
+                    } else {
+                        showError(data.message || "অজানা ত্রুটি।");
+                        loginButton.disabled = false;
+                        loginButton.textContent = "প্রবেশ করো";
+                    }
+                })
+                .catch(err => {
+                    showError("সার্ভারের সাথে সংযোগে সমস্যা হয়েছে।");
+                    loginButton.disabled = false;
+                    loginButton.textContent = "প্রবেশ করো";
+                });
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            loginContainer.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            answerReviewSection.classList.add('hidden');
+            quizStarted = true;
+
+            currentQuizQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, QUESTIONS_PER_QUIZ);
+            totalQuestionsSpan.textContent = currentQuizQuestions.length;
+            currentQuestionIndex = 0;
+            score = 0;
+            submittedAnswers = [];
+            currentScoreSpan.textContent = score;
+            
+            loadQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            let timeLeft = TIME_PER_QUESTION;
+            timerSpan.textContent = timeLeft;
+            progressBar.style.width = '100%';
+            progressBar.style.backgroundColor = '#00d2ff';
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerSpan.textContent = timeLeft;
+                const percentage = (timeLeft / TIME_PER_QUESTION) * 100;
+                progressBar.style.width = `${percentage}%`;
+
+                if (percentage < 50) progressBar.style.backgroundColor = '#f59e0b';
+                if (percentage < 25) progressBar.style.backgroundColor = '#ef4444';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(null, "No Answer (Time Out)", currentQuizQuestions[currentQuestionIndex].answer, currentQuizQuestions[currentQuestionIndex].explanation);
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= currentQuizQuestions.length) {
+                showResult();
+                return;
+            }
+
+            answerLocked = false; // নতুন প্রশ্ন লোড হওয়ার সময় লক খুলে দিন
+
+            const questionData = currentQuizQuestions[currentQuestionIndex];
+            questionNumberSpan.textContent = currentQuestionIndex + 1;
+            questionTextElement.textContent = questionData.question;
+            optionsContainer.innerHTML = '';
+            feedbackElement.classList.add('hidden');
+
+            const shuffledOptions = [...questionData.options].sort(() => 0.5 - Math.random());
+
+            shuffledOptions.forEach(optionText => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = optionText;
+                button.addEventListener('click', () => handleAnswer(button, optionText, questionData.answer, questionData.explanation));
+                optionsContainer.appendChild(button);
+            });
+            startTimer();
+        }
+
+        function handleAnswer(button, selectedOptionText, correctOptionText, explanation) {
+            // যদি উত্তর ইতোমধ্যে লক করা থাকে, তবে নতুন কোনো ক্লিক কাজ করবে না
+            if (answerLocked) return;
+            answerLocked = true; // সাথে সাথে লক করে দিন
+
+            clearInterval(timerInterval);
+            const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+            allOptionButtons.forEach(btn => btn.classList.add('disabled'));
+
+            submittedAnswers.push({
+                question: currentQuizQuestions[currentQuestionIndex].question,
+                userAnswer: selectedOptionText,
+                correctAnswer: correctOptionText,
+                explanation: explanation
+            });
+
+            if (selectedOptionText === correctOptionText) {
+                score++;
+                currentScoreSpan.textContent = score;
+                if(button) button.classList.add('correct');
+                feedbackElement.textContent = "সঠিক উত্তর!";
+                feedbackElement.style.color = '#10B981';
+            } else {
+                if(button) button.classList.add('incorrect');
+                feedbackElement.textContent = `ভুল। সঠিক উত্তর: ${correctOptionText}`;
+                feedbackElement.style.color = '#EF4444';
+            }
+            feedbackElement.classList.remove('hidden');
+
+            allOptionButtons.forEach(btn => {
+                if (btn.textContent === correctOptionText) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, FEEDBACK_DELAY_MS);
+        }
+
+        function showResult() {
+            quizStarted = false;
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+
+            participantNameSpan.textContent = studentInfo.name;
+            participantRollSpan.textContent = studentInfo.roll;
+
+            finalScoreSpan.textContent = score;
+            finalTotalSpan.textContent = currentQuizQuestions.length;
+
+            if (score === currentQuizQuestions.length) {
+                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো!";
+            } else if (score >= currentQuizQuestions.length * 0.8) {
+                resultMessageElement.textContent = "দারুণ! তুমি ৮০% এর বেশি নম্বর পেয়েছ!";
+            } else if (score >= currentQuizQuestions.length / 2) {
+                resultMessageElement.textContent = "খুব ভালো করেছো!";
+            } else {
+                resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন।";
+            }
+            
+            displayAnswerReview();
+            sendDataToGoogleSheet();
+        }
+
+        function displayAnswerReview() {
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = ''; 
+            submittedAnswers.forEach((result, index) => {
+                const isCorrect = result.userAnswer === result.correctAnswer;
+                const reviewBlock = document.createElement('div');
+                reviewBlock.className = 'card mb-4 p-4 border-l-4 ' + (isCorrect ? 'border-green-500' : 'border-red-500');
+                reviewBlock.innerHTML = `
+                    <p class="font-bold text-lg">${index + 1}. ${result.question}</p>
+                    <p class="mt-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}">
+                        <strong>তোমার উত্তর:</strong> ${result.userAnswer} ${isCorrect ? '✔' : '❌'}
+                    </p>
+                    ${!isCorrect ? `<p class="mt-1 text-green-400"><strong>সঠিক উত্তর:</strong> ${result.correctAnswer}</p>` : ''}
+                    <p class="mt-2 text-gray-400">
+                        <strong>ব্যাখ্যা:</strong> ${result.explanation}
+                    </p>
+                `;
+                reviewContainer.appendChild(reviewBlock);
+            });
+        }
+
+        function sendDataToGoogleSheet() {
+            if (isSubmitting) {
+                console.log("Submission already in progress. Preventing duplicate submission.");
+                return;
+            }
+
+            if (!SCRIPT_URL || SCRIPT_URL === 'আপনার Apps Script URL এখানে পেস্ট করুন') {
+                submissionStatus.textContent = 'ত্রুটি: গুগল শিট URL সেট করা হয়নি।';
+                submissionStatus.style.color = 'red';
+                return;
+            }
+
+            isSubmitting = true; 
+            submissionStatus.textContent = 'ফলাফল জমা দেওয়া হচ্ছে...';
+            submissionStatus.style.color = 'orange';
+            
+            const formData = new FormData();
+            formData.append('action', 'submitResult');
+            formData.append('studentName', studentInfo.name);
+            formData.append('studentRoll', studentInfo.roll);
+            formData.append('totalScore', `${score} / ${currentQuizQuestions.length}`);
+            formData.append('quizResultsJSON', JSON.stringify(submittedAnswers));
+            
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        submissionStatus.textContent = 'তোমার ফলাফল সফলভাবে জমা হয়েছে।';
+                        submissionStatus.style.color = '#10B981';
+                    } else {
+                        throw new Error(data.message || 'একটি অজানা ত্রুটি ঘটেছে।');
+                    }
+                    isSubmitting = false;
+                })
+                .catch(error => {
+                    console.error('Error submitting data:', error);
+                    submissionStatus.textContent = 'দুঃখিত, ফলাফল জমা দেওয়া যায়নি। সমস্যা: ' + error.message;
+                    submissionStatus.style.color = '#EF4444';
+                    isSubmitting = false;
+                });
+        }
+
+        function showTabSwitchWarning() {
+            if(quizStarted) {
+                quizStarted = false;
+                clearInterval(timerInterval);
+                quizSection.classList.add('hidden');
+                tabSwitchModal.classList.remove('hidden');
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        loginButton.addEventListener('click', handleLogin);
+        toggleReviewButton.addEventListener('click', () => {
+            answerReviewSection.classList.toggle('hidden');
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                showTabSwitchWarning();
+            }
+        });
+    </script>
+</body>
+</html>
